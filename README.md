@@ -1,7 +1,9 @@
 proj.xll
 ========
 
-proj.xll is a native Excel add-in which provides functions to transform coordinates between various map projections.
+Transform coordinates between various map projections directly within Excel.
+
+This program uses the [PROJ.4 Cartographic Projections Library](http://proj.osgeo.org/).
 
 Installation
 ------------
