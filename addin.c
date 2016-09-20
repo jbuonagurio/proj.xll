@@ -27,38 +27,38 @@ static LPWSTR rgWorksheetFuncs[rgWorksheetFuncsRows][rgWorksheetFuncsCols] =
         L"",                                    // LPXLOPER12 pxArgumentHelp4
         L""                                     // LPXLOPER12 pxArgumentHelp5
     },
-	{
-		L"projTransform",
-		L"UCCBBH",
-		L"PROJ.TRANSFORM",
-		L"",
-		L"1",
-		L"PROJ.4",
-		L"",
-		L"",
-		L"Transform X / Y points from source coordinate system to destination coordinate system.", 
-		L"Source coordinate system",
-		L"Destination coordinate system",
-		L"X coordinate",
-		L"Y coordinate",
-		L"Output flag: 1 = X, 2 = Y"
-	},
-	{
-		L"projEPSG",
-		L"UJ",
-		L"EPSG",
-		L"",
-		L"1",
-		L"PROJ.4",
-		L"",
-		L"",
-		L"Returns the PROJ.4 string associated with an EPSG code.",
-		L"EPSG code",
-		L"",
-		L"",
-		L"",
-		L""
-	}
+    {
+        L"projTransform",
+        L"UCCBBH",
+        L"PROJ.TRANSFORM",
+        L"",
+        L"1",
+        L"PROJ.4",
+        L"",
+        L"",
+        L"Transform X / Y points from source coordinate system to destination coordinate system.", 
+        L"Source coordinate system",
+        L"Destination coordinate system",
+        L"X coordinate",
+        L"Y coordinate",
+        L"Output flag: 1 = X, 2 = Y"
+    },
+    {
+        L"projEPSG",
+        L"UJ",
+        L"EPSG",
+        L"",
+        L"1",
+        L"PROJ.4",
+        L"",
+        L"",
+        L"Returns the PROJ.4 string associated with an EPSG code.",
+        L"EPSG code",
+        L"",
+        L"",
+        L"",
+        L""
+    }
 };
 
 /*
@@ -228,12 +228,12 @@ __declspec(dllexport) LPXLOPER12 WINAPI projTransform(const char* src, const cha
     static XLOPER12 xResult;
 
     projPJ proj_src, proj_dst;
-	proj_src = pj_init_plus(src);
-	proj_dst = pj_init_plus(dst);
+    proj_src = pj_init_plus(src);
+    proj_dst = pj_init_plus(dst);
 
     if (!proj_src || !proj_dst)
     {
-		xResult.xltype = xltypeErr;
+        xResult.xltype = xltypeErr;
         xResult.val.err = xlerrValue;
         return &xResult;
     }
@@ -243,22 +243,22 @@ __declspec(dllexport) LPXLOPER12 WINAPI projTransform(const char* src, const cha
 
     if (pj_transform(proj_src, proj_dst, 1, 1, &x1, &y1, NULL) == 0)
     {
-		if (type == 1) {
-			xResult.xltype = xltypeNum;
-			xResult.val.num = x1;
-		}
-		else if (type == 2) {
-			xResult.xltype = xltypeNum;
-			xResult.val.num = y1;
-		}
-		else {
-			xResult.xltype = xltypeErr;
-			xResult.val.err = xlerrValue; // Invalid argument
-		}
+        if (type == 1) {
+            xResult.xltype = xltypeNum;
+            xResult.val.num = x1;
+        }
+        else if (type == 2) {
+            xResult.xltype = xltypeNum;
+            xResult.val.num = y1;
+        }
+        else {
+            xResult.xltype = xltypeErr;
+            xResult.val.err = xlerrValue; // Invalid argument
+        }
     }
     else
     {
-		xResult.xltype = xltypeErr;
+        xResult.xltype = xltypeErr;
         xResult.val.err = xlerrNum; // Error in pj_transform
     }
     
@@ -276,18 +276,18 @@ __declspec(dllexport) LPXLOPER12 WINAPI projTransform(const char* src, const cha
 
 __declspec(dllexport) LPXLOPER12 WINAPI projEPSG(const int code)
 {
-	static XLOPER12 xResult;
-	
-	wchar_t *projStr = epsgLookup(code);
+    static XLOPER12 xResult;
+    
+    wchar_t *projStr = epsgLookup(code);
 
-	if (projStr != NULL) {
-		xResult.xltype = xltypeStr;
-		xResult.val.str = projStr;
-	}
-	else {
-		xResult.xltype = xltypeErr;
-		xResult.val.err = xlerrNA; // No value available
-	}
+    if (projStr != NULL) {
+        xResult.xltype = xltypeStr;
+        xResult.val.str = projStr;
+    }
+    else {
+        xResult.xltype = xltypeErr;
+        xResult.val.err = xlerrNA; // No value available
+    }
 
-	return (LPXLOPER12)&xResult;
+    return (LPXLOPER12)&xResult;
 }
