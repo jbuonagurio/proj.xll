@@ -1,0 +1,11 @@
+LIBRARY proj.xll
+
+EXPORTS
+	xlAutoOpen
+	xlAutoClose
+	xlAutoRegister12
+	xlAutoAdd
+	xlAutoRemove
+	projVersion
+	projTransform
+	projEPSG
