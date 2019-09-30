@@ -3,7 +3,7 @@ proj.xll
 
 Transform coordinates between various map projections directly within Excel.
 
-This program uses the [PROJ.4 Cartographic Projections Library](http://proj.osgeo.org/).
+This program currently uses version 4 of the [PROJ Cartographic Projections Library](https://proj.org).
 
 Installation
 ------------
@@ -15,7 +15,7 @@ Go to Excel Options, Add-ins, Manage Excel Add-ins. Click Browse, and select pro
 Usage
 -----
 
-To display the PROJ.4 library version:
+To display the PROJ library version:
 
 ```
 =PROJ.VERSION()
@@ -46,9 +46,9 @@ EPSG codes are also supported using the `EPSG()` helper function. For example, t
 Development
 -----------
 
-Download the [PROJ.4 source](http://proj4.org/download.html), tested with v4.9.3 (2016-09-02). Extract to C:\PROJ.
+Download the [PROJ source](https://proj.org/download.html), tested with v4.9.3 (2016-09-02). Extract to C:\PROJ.
 
-Edit the PROJ.4 OPTFLAGS in nmake.opt as follows, to use the static multithreaded version of the CRT library:
+Edit the PROJ.4 OPTFLAGS in nmake.opt as follows, to use the static multithreaded version of the CRT library (`/MT`):
 
 ```
 !IFNDEF OPTFLAGS
@@ -67,10 +67,20 @@ C:\PROJ>nmake /f makefile.vc
 C:\PROJ>nmake /f makefile.vc install-all
 ```
 
-Download and install the [Excel 2013 SDK](https://www.microsoft.com/en-us/download/details.aspx?id=35567) to the default location. Build the FRAMEWORK library from a Visual Studio command prompt:
+Download and install the [Excel 2013 SDK](https://www.microsoft.com/en-us/download/details.aspx?id=35567) to the default location. As with PROJ, update the SAMPLES/FRAMEWRK makefile to use the static CRT (`/MT`):
 
 ```
-C:\2013 Office System Developer Resources\Excel2013XLLSDK\SAMPLES>MAKE DEBUG
+!if "$(TYPE)" == "DEBUG"
+CPPFLAGS        =/Od /W3 /WX /EHsc /Zi /MTd /Fd"$(FRAMEWORK_PDB)" /Fo"$(FRAMEWORKBUILDDIR)\\"
+!else
+CPPFLAGS        =/W3 /WX /EHsc /MT /Fo"$(FRAMEWORKBUILDDIR)\\"
+!endif
 ```
 
-You should now be able to build the XLL using either the Visual Studio project or nmake makefile.
+Build the library from a Visual Studio command prompt:
+
+```
+C:\2013 Office System Developer Resources\Excel2013XLLSDK\SAMPLES\FRAMEWRK>nmake TYPE=RELEASE
+```
+
+You should now be able to build the XLL using the nmake makefile.
