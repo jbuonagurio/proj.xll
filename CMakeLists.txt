@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0091 NEW)
 
 project(projxll LANGUAGES C)
 
+# Set default build type to Release.
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY VALUE "Release")
+
+# Always build a shared library.
 set(BUILD_SHARED_LIBS ON)
 
 if(DEFINED ENV{VCPKG_DEFAULT_TRIPLET} AND NOT DEFINED VCPKG_TARGET_TRIPLET)
@@ -30,13 +35,15 @@ message("VCPKG_TARGET_TRIPLET: ${VCPKG_TARGET_TRIPLET}")
 #############################
 
 # Starting with PROJ version 6.1.0, proj_context_set_search_paths() has
-# priority over PROJ_LIB, so require this as the minimum version.
-find_package(sqlite3 CONFIG REQUIRED)
+# priority over PROJ_LIB, so require it as the minimum version.
 find_package(PROJ4 6.1.0 REQUIRED)
 
 # Get the PROJ database database path.
 get_filename_component(PROJ4_DB_FILE proj.db
-  ABSOLUTE BASE_DIR "${PROJ4_LIBRARY_DIRS}/../share/proj/" CACHE)
+  ABSOLUTE BASE_DIR "${PROJ4_DIR}" CACHE)
+if(NOT EXISTS ${PROJ4_DB_FILE})
+  message(FATAL_ERROR "proj.db not found")
+endif()
 
 find_path(XLL_INCLUDE_DIRS
   NAMES XLCALL.H
@@ -69,10 +76,10 @@ list(APPEND XLL_LIBRARIES ${XLCALL32_LIBRARY} ${FRMWRK32_LIBRARY})
 configure_file(resource.rc.in resource.rc @ONLY)
 
 add_library(projxll SHARED
+  ${CMAKE_CURRENT_BINARY_DIR}/resource.rc
   addin.c
   addin.def
   util.c
-  resource.rc
 )
 
 set_target_properties(projxll PROPERTIES
@@ -81,7 +88,6 @@ set_target_properties(projxll PROPERTIES
   SUFFIX ".xll")
 
 target_link_libraries(projxll PRIVATE
-  sqlite3
   PROJ4::proj
   ${XLL_LIBRARIES})
 

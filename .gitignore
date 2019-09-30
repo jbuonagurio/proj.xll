@@ -1,6 +1,7 @@
 [Dd]ebug/
 [Rr]elease/
 [Bb]in/
+[Bb]uild/
 *.sln
 *.VC.db
 *.vcxproj.filters

@@ -16,7 +16,7 @@
 CFLAGS = /nologo /O2 /W3 /WX /EHsc /MT /Zc:wchar_t /Zc:inline /Gd /TC
 
 # Build Artifacts
-BUILDDIR = .\bin\
+BUILDDIR = ..\build\
 
 # Installation Directory
 INSTDIR = %USERPROFILE%\AppData\Roaming\Microsoft\AddIns\
@@ -59,5 +59,5 @@ clean:
     del "$(BUILDDIR)\*.lib"
 
 install: xll
-	copy /Y bin\$(XLLNAME) "$(INSTDIR)"
+	copy /Y $(BUILDDIR)\$(XLLNAME) "$(INSTDIR)"
 

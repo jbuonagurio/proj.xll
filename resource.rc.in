@@ -1,1 +1,3 @@
+#include "resource.h"
+
 IDR_PROJDB RCDATA "@PROJ4_DB_FILE@"

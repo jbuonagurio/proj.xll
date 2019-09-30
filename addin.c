@@ -1,8 +1,15 @@
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#define VC_EXTRALEAN
+
 #include <ctype.h>
 #include <windows.h>
+
+// XLL
 #include <XLCALL.H>
 #include <FRAMEWRK.H>
 
+// PROJ
 #define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
 #include <proj_api.h>
 
@@ -20,10 +27,10 @@ static LPWSTR rgWorksheetFuncs[rgWorksheetFuncsRows][rgWorksheetFuncsCols] =
         L"PROJ.VERSION",                        // LPXLOPER12 pxFunctionText
         L"",                                    // LPXLOPER12 pxArgumentText
         L"1",                                   // LPXLOPER12 pxMacroType
-        L"PROJ.4",                              // LPXLOPER12 pxCategory
+        L"PROJ",                                // LPXLOPER12 pxCategory
         L"",                                    // LPXLOPER12 pxShortcutText
         L"",                                    // LPXLOPER12 pxHelpTopic
-        L"Returns the PROJ.4 library version.", // LPXLOPER12 pxFunctionHelp
+        L"Returns the PROJ library version.",   // LPXLOPER12 pxFunctionHelp
         L"",                                    // LPXLOPER12 pxArgumentHelp1
         L"",                                    // LPXLOPER12 pxArgumentHelp2
         L"",                                    // LPXLOPER12 pxArgumentHelp3
@@ -36,7 +43,7 @@ static LPWSTR rgWorksheetFuncs[rgWorksheetFuncsRows][rgWorksheetFuncsCols] =
         L"PROJ.TRANSFORM",
         L"",
         L"1",
-        L"PROJ.4",
+        L"PROJ",
         L"",
         L"",
         L"Transform X / Y points from source coordinate system to destination coordinate system.", 
@@ -52,7 +59,7 @@ static LPWSTR rgWorksheetFuncs[rgWorksheetFuncsRows][rgWorksheetFuncsCols] =
         L"EPSG",
         L"",
         L"1",
-        L"PROJ.4",
+        L"PROJ",
         L"",
         L"",
         L"Returns the PROJ.4 string associated with an EPSG code.",
@@ -76,6 +83,7 @@ static LPWSTR rgWorksheetFuncs[rgWorksheetFuncsRows][rgWorksheetFuncsCols] =
 ** UDFs:
 ** - projTransform
 ** - projVersion
+** - projEPSG
 */
 
 // Excel calls xlAutoOpen when it loads the XLL.
