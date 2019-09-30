@@ -1,8 +1,11 @@
 #include <ctype.h>
 #include <windows.h>
-#include "XLCALL.H"
-#include "FRAMEWRK.H"
-#include "proj_api.h"
+#include <XLCALL.H>
+#include <FRAMEWRK.H>
+
+#define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
+#include <proj_api.h>
+
 #include "util.h"
 #include "epsg.h"
 
